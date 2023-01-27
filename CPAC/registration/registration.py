@@ -4704,12 +4704,7 @@ def warp_tissuemask_to_T1template(wf, cfg, strat_pool, pipe_num, opt=None):
                  "label-GM_mask",
                  "from-T1w_to-template_mode-image_xfm"),
                  "T1w-template"],
-     "outputs": {"space-template_label-CSF_mask": {
-                     "Template": "T1w-template"},
-                 "space-template_label-WM_mask": {
-                     "Template": "T1w-template"},
-                 "space-template_label-GM_mask": {
-                     "Template": "T1w-template"}}}
+     "outputs": {"space-template_label-CSF_mask": {"Template": "T1w-template"}, "space-template_label-WM_mask": {"Template": "T1w-template"},"space-template_label-GM_mask": {"Template": "T1w-template"}}}
     '''
     return warp_tissuemask_to_template(wf, cfg, strat_pool, pipe_num,
                                        xfm='from-T1w_to-template_mode-image_'

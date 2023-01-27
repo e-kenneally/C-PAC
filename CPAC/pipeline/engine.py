@@ -1012,6 +1012,7 @@ class ResourcePool:
 
                 unique_id = out_dct['unique_id']
                 resource_idx = resource
+
                 if isinstance(num_variant, int):
                     if True in cfg['functional_preproc',
                                    'motion_estimates_and_correction',
@@ -1127,7 +1128,7 @@ class ResourcePool:
                 nii_name.inputs.keep_ext = True
                 wf.connect(id_string, 'out_filename',
                            nii_name, 'format_string')
-
+                
                 node, out = self.rpool[resource][pipe_idx]['data']
                 try:
                     wf.connect(node, out, nii_name, 'in_file')

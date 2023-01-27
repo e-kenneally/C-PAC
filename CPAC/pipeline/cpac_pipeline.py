@@ -82,7 +82,8 @@ from CPAC.anat_preproc.anat_preproc import (
     brain_mask_T2,
     brain_mask_acpc_T2,
     brain_extraction_temp_T2,
-    brain_extraction_T2
+    brain_extraction_T2,
+    postproc_prep
 )
 
 from CPAC.registration.registration import (
@@ -912,6 +913,7 @@ def build_anat_preproc_stack(rpool, cfg, pipeline_blocks=None):
                 acpc_blocks = [
                     acpc_align_head  # does not output nor generate a mask
                 ]
+        
 
         anat_preproc_blocks = [
             (non_local_means, ('T1w', ['desc-preproc_T1w',
@@ -994,7 +996,8 @@ def build_anat_preproc_stack(rpool, cfg, pipeline_blocks=None):
                 anat_blocks_T2 = anat_preproc_blocks_T2 + acpc_blocks_T2
 
             pipeline_blocks += anat_blocks_T2
-
+    if cfg.anatomical_preproc['surf_mask']['run']:
+        pipeline_blocks += [postproc_prep]
     # Anatomical T1 brain extraction
     if not rpool.check_rpool('desc-brain_T1w'):
         anat_brain_blocks = [
@@ -1363,6 +1366,7 @@ def build_workflow(subject_id, sub_dict, cfg, pipeline_name=None,
 	    apply_func_warp['EPI'] = (_r_w_f_r['coregistration']['run'] and _r_w_f_r['func_registration_to_template']['run_EPI'])
     else:
         apply_func_warp['EPI'] = (_r_w_f_r['func_registration_to_template']['run_EPI'])
+    
     del _r_w_f_r
 
     template_funcs = [

@@ -1807,7 +1807,7 @@ def bold_mask_anatomical_refined(wf, cfg, strat_pool, pipe_num, opt=None):
      "inputs": [("bold",
                  "desc-preproc_bold"),
                 ("desc-brain_T1w",
-                 ["space-T1w_desc-brain_mask",
+                 ["pipeline-fs_space-T1w_desc-brain_mask",
                   "space-T1w_desc-acpcbrain_mask"])],
      "outputs": ["space-bold_desc-brain_mask"]}
     '''

@@ -437,6 +437,9 @@ latest_schema = Schema({
                 'BiasFieldSmoothingSigma': Maybe(int),
             },),
         ),
+        'surf_mask': {
+            'run': bool1_1
+        },
         'acpc_alignment': Required(
             # require 'T1w_brain_ACPC_template' and
             # 'T2w_brain_ACPC_template' if 'acpc_target' is 'brain'

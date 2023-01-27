@@ -392,7 +392,11 @@ def warp_longitudinal_seg_to_T1w(wf, cfg, strat_pool, pipe_num, opt=None):
             strat_pool.get_data("from-longitudinal_to-template_mode-image_xfm")
         wf.connect(node, out, apply_xfm, 'inputspec.transform')
 
-        outputs[f'label-{label}'] = (apply_xfm, 'outputspec.output_image')
+        outputs[f'label-{label}',
+                'label-CSF_mask',
+                'label-WM_mask',
+                'label-GM_mask'
+                ] = (apply_xfm, 'outputspec.output_image')
 
     return (wf, outputs)
 
