@@ -1682,11 +1682,11 @@ def ingress_raw_anat_data(wf, rpool, cfg, data_paths, unique_id, part_id,
                        {}, "", "freesurfer_config_ingress")
 
         recon_outs = {
-            'raw-average': 'mri/rawavg.mgz',
-            'subcortical-seg': 'mri/aseg.mgz',
-            'brainmask': 'mri/brainmask.mgz',
-            'wmparc': 'mri/wmparc.mgz',
-            'T1': 'mri/T1.mgz',
+            'pipeline-fs_raw-average': 'mri/rawavg.mgz',
+            'pipeline-fs_subcortical-seg': 'mri/aseg.mgz',
+            'pipeline-fs_brainmask': 'mri/brainmask.mgz',
+            'pipeline-fs_wmparc': 'mri/wmparc.mgz',
+            'pipeline-fs_T1': 'mri/T1.mgz',
             'hemi-L_desc-surface_curv': 'surf/lh.curv',
             'hemi-R_desc-surface_curv': 'surf/rh.curv',
             'hemi-L_desc-surfaceMesh_pial': 'surf/lh.pial',

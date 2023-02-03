@@ -2548,7 +2548,6 @@ def freesurfer_postproc(wf, cfg, strat_pool, pipe_num, opt=None):
                  "pipeline-fs_brainmask",
                  "pipeline-fs_T1")],
      "outputs": ["pipeline-fs_space-T1w_desc-brain_mask",
-                 "space-T1w_desc-brain_mask",
                  "pipeline-fs_hemi-L_desc-surface_curv",
                  "pipeline-fs_hemi-R_desc-surface_curv",
                  "pipeline-fs_hemi-L_desc-surfaceMesh_pial",
@@ -2567,10 +2566,7 @@ def freesurfer_postproc(wf, cfg, strat_pool, pipe_num, opt=None):
                  "pipeline-fs_hemi-R_desc-surfaceMesh_white",
                  "pipeline-fs_label-CSF_mask",
                  "pipeline-fs_label-WM_mask",
-                 "pipeline-fs_label-GM_mask",
-                 "label-CSF_mask",
-                 "label-WM_mask",
-                 "label-GM_mask"]}
+                 "pipeline-fs_label-GM_mask"]}
     '''
     inputs = flatten_list(freesurfer_postproc, 'inputs')
     inputs.remove('pipeline-fs_T1')  # optional input
@@ -2675,16 +2671,12 @@ def freesurfer_postproc(wf, cfg, strat_pool, pipe_num, opt=None):
         outputs['pipeline-fs_label-CSF_mask'] = (erode_tissues['csf'], 'binary_file')
         outputs['pipeline-fs_label-WM_mask'] = (erode_tissues['wm'], 'binary_file')
         outputs['pipeline-fs_label-GM_mask'] = (erode_tissues['gm'], 'binary_file')
-        outputs['label-CSF_mask'] = (erode_tissues['csf'], 'binary_file')
-        outputs['label-WM_mask'] = (erode_tissues['wm'], 'binary_file')
-        outputs['label-GM_mask'] = (erode_tissues['gm'], 'binary_file')
+
     else:
         outputs['pipeline-fs_label-CSF_mask'] = (pick_tissue, 'csf_mask')
         outputs['pipeline-fs_label-WM_mask'] = (pick_tissue, 'wm_mask')
         outputs['pipeline-fs_label-GM_mask'] = (pick_tissue, 'gm_mask')
-        outputs['label-CSF_mask'] = (pick_tissue, 'csf_mask')
-        outputs['label-WM_mask'] = (pick_tissue, 'wm_mask')
-        outputs['label-GM_mask'] = (pick_tissue, 'gm_mask')
+
 
     return (wf, outputs)
 
