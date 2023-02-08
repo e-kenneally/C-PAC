@@ -437,9 +437,7 @@ latest_schema = Schema({
                 'BiasFieldSmoothingSigma': Maybe(int),
             },),
         ),
-        'surf_mask': {
-            'run': bool1_1
-        },
+
         'acpc_alignment': Required(
             # require 'T1w_brain_ACPC_template' and
             # 'T2w_brain_ACPC_template' if 'acpc_target' is 'brain'
@@ -715,7 +713,9 @@ latest_schema = Schema({
     'surface_analysis': {
         'freesurfer': {
             'run_reconall': bool1_1,
-            'reconall_args': Maybe(str)
+            'reconall_args': Maybe(str),
+            'generate_masks': bool1_1,
+            'ingress_reconall': bool1_1,
         },
         'post_freesurfer': {
             'run': bool1_1,

@@ -1669,7 +1669,9 @@ def ingress_raw_anat_data(wf, rpool, cfg, data_paths, unique_id, part_id,
         rpool.set_data('T2w', anat_flow_T2, 'outputspec.anat', {},
                     "", "anat_ingress")
 
-    if 'freesurfer_dir' in data_paths['anat']:
+    ingress_fs = cfg.surface_analysis['freesurfer']['ingress_reconall']
+    
+    if 'freesurfer_dir' in data_paths['anat'] and ingress_fs:
         anat['freesurfer_dir'] = data_paths['anat']['freesurfer_dir']
 
         fs_ingress = create_general_datasource('gather_freesurfer_dir')
@@ -1687,22 +1689,22 @@ def ingress_raw_anat_data(wf, rpool, cfg, data_paths, unique_id, part_id,
             'pipeline-fs_brainmask': 'mri/brainmask.mgz',
             'pipeline-fs_wmparc': 'mri/wmparc.mgz',
             'pipeline-fs_T1': 'mri/T1.mgz',
-            'hemi-L_desc-surface_curv': 'surf/lh.curv',
-            'hemi-R_desc-surface_curv': 'surf/rh.curv',
-            'hemi-L_desc-surfaceMesh_pial': 'surf/lh.pial',
-            'hemi-R_desc-surfaceMesh_pial': 'surf/rh.pial',
-            'hemi-L_desc-surfaceMesh_smoothwm': 'surf/lh.smoothwm',
-            'hemi-R_desc-surfaceMesh_smoothwm': 'surf/rh.smoothwm',
-            'hemi-L_desc-surfaceMesh_sphere': 'surf/lh.sphere',
-            'hemi-R_desc-surfaceMesh_sphere': 'surf/rh.sphere',
-            'hemi-L_desc-surfaceMap_sulc': 'surf/lh.sulc',
-            'hemi-R_desc-surfaceMap_sulc': 'surf/rh.sulc',
-            'hemi-L_desc-surfaceMap_thickness': 'surf/lh.thickness',
-            'hemi-R_desc-surfaceMap_thickness': 'surf/rh.thickness',
-            'hemi-L_desc-surfaceMap_volume': 'surf/lh.volume',
-            'hemi-R_desc-surfaceMap_volume': 'surf/rh.volume',
-            'hemi-L_desc-surfaceMesh_white': 'surf/lh.white',
-            'hemi-R_desc-surfaceMesh_white': 'surf/rh.white',
+            'pipeline-fs_hemi-L_desc-surface_curv': 'surf/lh.curv',
+            'pipeline-fs_hemi-R_desc-surface_curv': 'surf/rh.curv',
+            'pipeline-fs_hemi-L_desc-surfaceMesh_pial': 'surf/lh.pial',
+            'pipeline-fs_hemi-R_desc-surfaceMesh_pial': 'surf/rh.pial',
+            'pipeline-fs_hemi-L_desc-surfaceMesh_smoothwm': 'surf/lh.smoothwm',
+            'pipeline-fs_hemi-R_desc-surfaceMesh_smoothwm': 'surf/rh.smoothwm',
+            'pipeline-fs_hemi-L_desc-surfaceMesh_sphere': 'surf/lh.sphere',
+            'pipeline-fs_hemi-R_desc-surfaceMesh_sphere': 'surf/rh.sphere',
+            'pipeline-fs_hemi-L_desc-surfaceMap_sulc': 'surf/lh.sulc',
+            'pipeline-fs_hemi-R_desc-surfaceMap_sulc': 'surf/rh.sulc',
+            'pipeline-fs_hemi-L_desc-surfaceMap_thickness': 'surf/lh.thickness',
+            'pipeline-fs_hemi-R_desc-surfaceMap_thickness': 'surf/rh.thickness',
+            'pipeline-fs_hemi-L_desc-surfaceMap_volume': 'surf/lh.volume',
+            'pipeline-fs_hemi-R_desc-surfaceMap_volume': 'surf/rh.volume',
+            'pipeline-fs_hemi-L_desc-surfaceMesh_white': 'surf/lh.white',
+            'pipeline-fs_hemi-R_desc-surfaceMesh_white': 'surf/rh.white',
         }
         
         for key, outfile in recon_outs.items():

@@ -83,7 +83,6 @@ from CPAC.anat_preproc.anat_preproc import (
     brain_mask_acpc_T2,
     brain_extraction_temp_T2,
     brain_extraction_T2,
-    postproc_prep
 )
 
 from CPAC.registration.registration import (
@@ -877,8 +876,11 @@ def build_anat_preproc_stack(rpool, cfg, pipeline_blocks=None):
 
         # brain masking for ACPC alignment
         if cfg.anatomical_preproc['acpc_alignment']['acpc_target'] == 'brain':
-            if rpool.check_rpool('space-T1w_desc-brain_mask') or \
-                    cfg.surface_analysis['freesurfer']['run_reconall']:
+            # if rpool.check_rpool('space-T1w_desc-brain_mask') or \
+            #         cfg.surface_analysis['freesurfer']['run_reconall']:
+            if not rpool.check_rpool('freesurfer-subject-dir') \
+                    and not cfg.surface_analysis['freesurfer']['run_reconall'] \
+                    and not cfg.surface_analysis['freesurfer']['generate_masks']:
                 acpc_blocks = [
                     brain_extraction_temp,
                     acpc_align_brain_with_mask
@@ -931,8 +933,11 @@ def build_anat_preproc_stack(rpool, cfg, pipeline_blocks=None):
         pipeline_blocks += [freesurfer_abcd_preproc]
 
     # Anatomical T1 brain masking
-    if not rpool.check_rpool('space-T1w_desc-brain_mask') or \
-        cfg.surface_analysis['freesurfer']['run_reconall']:
+    # if not rpool.check_rpool('space-T1w_desc-brain_mask') or \
+    #     cfg.surface_analysis['freesurfer']['run_reconall']:
+    if not rpool.check_rpool('freesurfer-subject-dir') \
+            and not cfg.surface_analysis['freesurfer']['run_reconall'] \
+            and not cfg.surface_analysis['freesurfer']['generate_masks']:
         anat_brain_mask_blocks = [
             [brain_mask_afni,
              brain_mask_fsl,
@@ -996,8 +1001,7 @@ def build_anat_preproc_stack(rpool, cfg, pipeline_blocks=None):
                 anat_blocks_T2 = anat_preproc_blocks_T2 + acpc_blocks_T2
 
             pipeline_blocks += anat_blocks_T2
-    if cfg.anatomical_preproc['surf_mask']['run']:
-        pipeline_blocks += [postproc_prep]
+
     # Anatomical T1 brain extraction
     if not rpool.check_rpool('desc-brain_T1w'):
         anat_brain_blocks = [
