@@ -532,7 +532,7 @@ def tissue_seg_fsl_fast(wf, cfg, strat_pool, pipe_num, opt=None):
      "option_key": ["tissue_segmentation", "using"],
      "option_val": "FSL-FAST",
      "inputs": [(["desc-brain_T1w", "space-longitudinal_desc-brain_T1w"],
-                 ["pipeline-fs_space-T1w_desc-brain_mask",
+                 ["space-T1w_desc-brain_mask",
                   "space-longitudinal_desc-brain_mask"],
                  ["from-template_to-T1w_mode-image_desc-linear_xfm",
                   "from-template_to-longitudinal_mode-image_desc-linear_xfm"]),
@@ -665,7 +665,7 @@ def tissue_seg_fsl_fast(wf, cfg, strat_pool, pipe_num, opt=None):
     wf.connect(node, out, process_gm, 'inputspec.brain')
     wf.connect(node, out, process_wm, 'inputspec.brain')
 
-    node, out = strat_pool.get_data(["pipeline-fs_space-T1w_desc-brain_mask",
+    node, out = strat_pool.get_data(["space-T1w_desc-brain_mask",
                                      "space-longitudinal_desc-brain_mask"])
     wf.connect(node, out, process_csf, 'inputspec.brain_mask')
     wf.connect(node, out, process_gm, 'inputspec.brain_mask')
@@ -734,9 +734,9 @@ def tissue_seg_T1_template_based(wf, cfg, strat_pool, pipe_num, opt=None):
      "option_val": "Template_Based",
      "inputs": [("desc-brain_T1w",
                  "from-template_to-T1w_mode-image_desc-linear_xfm")],
-     "outputs": ["pipeline-fs_label-CSF_mask",
-                 "pipeline-fs_label-GM_mask",
-                 "pipeline-fs_label-WM_mask"]}
+     "outputs": ["label-CSF_mask",
+                 "label-GM_mask",
+                 "label-WM_mask"]}
     '''
 
     xfm_prov = strat_pool.get_cpac_provenance(
@@ -774,10 +774,10 @@ def tissue_seg_T1_template_based(wf, cfg, strat_pool, pipe_num, opt=None):
                gm_template2t1, 'inputspec.standard2highres_mat')
 
     outputs = {
-        'pipeline-fs_label-CSF_mask': (
+        'label-CSF_mask': (
         csf_template2t1, 'outputspec.segment_mask_temp2t1'),
-        'pipeline-fs_label-GM_mask': (gm_template2t1, 'outputspec.segment_mask_temp2t1'),
-        'pipeline-fs_label-WM_mask': (wm_template2t1, 'outputspec.segment_mask_temp2t1')
+        'label-GM_mask': (gm_template2t1, 'outputspec.segment_mask_temp2t1'),
+        'label-WM_mask': (wm_template2t1, 'outputspec.segment_mask_temp2t1')
     }
 
     return (wf, outputs)
@@ -849,11 +849,11 @@ def tissue_seg_ants_prior(wf, cfg, strat_pool, pipe_num, opt=None):
      "option_key": ["tissue_segmentation", "using"],
      "option_val": "ANTs_Prior_Based",
      "inputs": [("desc-brain_T1w",
-                 ["pipeline-fs_space-T1w_desc-brain_mask",
+                 ["space-T1w_desc-brain_mask",
                   "space-T1w_desc-acpcbrain_mask"])],
-     "outputs": ["pipeline-fs_label-CSF_mask",
-                 "pipeline-fs_label-GM_mask",
-                 "pipeline-fs_label-WM_mask"]}
+     "outputs": ["label-CSF_mask",
+                 "label-GM_mask",
+                 "label-WM_mask"]}
     '''
 
     seg_preproc_ants_prior_based = \
@@ -884,16 +884,16 @@ def tissue_seg_ants_prior(wf, cfg, strat_pool, pipe_num, opt=None):
     wf.connect(node, out,
                seg_preproc_ants_prior_based, 'inputspec.anatomical_brain')
 
-    node, out = strat_pool.get_data(['pipeline-fs_space-T1w_desc-brain_mask',
+    node, out = strat_pool.get_data(['space-T1w_desc-brain_mask',
                                      'space-T1w_desc-acpcbrain_mask'])
     wf.connect(node, out, seg_preproc_ants_prior_based,
                'inputspec.anatomical_brain_mask')
 
     outputs = {
-        'pipeline-fs_label-CSF_mask': (
+        'label-CSF_mask': (
         seg_preproc_ants_prior_based, 'outputspec.csf_mask'),
-        'pipeline-fs_label-GM_mask': (seg_preproc_ants_prior_based, 'outputspec.gm_mask'),
-        'pipeline-fs_label-WM_mask': (seg_preproc_ants_prior_based, 'outputspec.wm_mask')
+        'label-GM_mask': (seg_preproc_ants_prior_based, 'outputspec.gm_mask'),
+        'label-WM_mask': (seg_preproc_ants_prior_based, 'outputspec.wm_mask')
     }
 
     return (wf, outputs)
@@ -907,25 +907,25 @@ def tissue_seg_freesurfer(wf, cfg, strat_pool, pipe_num, opt=None):
      "option_key": ["tissue_segmentation", "using"],
      "option_val": "FreeSurfer",
      "inputs": ["freesurfer-subject-dir"],
-     "outputs": ["pipeline-fs_hemi-L_desc-surface_curv",
-                 "pipeline-fs_hemi-R_desc-surface_curv",
-                 "pipeline-fs_hemi-L_desc-surfaceMesh_pial",
-                 "pipeline-fs_hemi-R_desc-surfaceMesh_pial",
-                 "pipeline-fs_hemi-L_desc-surfaceMesh_smoothwm",
-                 "pipeline-fs_hemi-R_desc-surfaceMesh_smoothwm",
-                 "pipeline-fs_hemi-L_desc-surfaceMesh_sphere",
-                 "pipeline-fs_hemi-R_desc-surfaceMesh_sphere",
-                 "pipeline-fs_hemi-L_desc-surfaceMap_sulc",
-                 "pipeline-fs_hemi-R_desc-surfaceMap_sulc",
-                 "pipeline-fs_hemi-L_desc-surfaceMap_thickness",
-                 "pipeline-fs_hemi-R_desc-surfaceMap_thickness",
-                 "pipeline-fs_hemi-L_desc-surfaceMap_volume",
-                 "pipeline-fs_hemi-R_desc-surfaceMap_volume",
-                 "pipeline-fs_hemi-L_desc-surfaceMesh_white",
-                 "pipeline-fs_hemi-R_desc-surfaceMesh_white",
-                 "pipeline-fs_label-CSF_mask",
-                 "pipeline-fs_label-GM_mask",
-                 "pipeline-fs_label-WM_mask"]}
+     "outputs": ["hemi-L_desc-surface_curv",
+                 "hemi-R_desc-surface_curv",
+                 "hemi-L_desc-surfaceMesh_pial",
+                 "hemi-R_desc-surfaceMesh_pial",
+                 "hemi-L_desc-surfaceMesh_smoothwm",
+                 "hemi-R_desc-surfaceMesh_smoothwm",
+                 "hemi-L_desc-surfaceMesh_sphere",
+                 "hemi-R_desc-surfaceMesh_sphere",
+                 "hemi-L_desc-surfaceMap_sulc",
+                 "hemi-R_desc-surfaceMap_sulc",
+                 "hemi-L_desc-surfaceMap_thickness",
+                 "hemi-R_desc-surfaceMap_thickness",
+                 "hemi-L_desc-surfaceMap_volume",
+                 "hemi-R_desc-surfaceMap_volume",
+                 "hemi-L_desc-surfaceMesh_white",
+                 "hemi-R_desc-surfaceMesh_white",
+                 "label-CSF_mask",
+                 "label-GM_mask",
+                 "label-WM_mask"]}
     '''
 
     fs_seg, hemisphere_outputs = create_seg_preproc_freesurfer(
@@ -936,9 +936,9 @@ def tissue_seg_freesurfer(wf, cfg, strat_pool, pipe_num, opt=None):
     wf.connect(node, out, fs_seg, 'inputspec.subject_dir')
 
     outputs = {
-        'pipeline-fs_label-CSF_mask': (fs_seg, 'outputspec.csf_mask'),
-        'pipeline-fs_label-GM_mask': (fs_seg, 'outputspec.gm_mask'),
-        'pipeline-fs_label-WM_mask': (fs_seg, 'outputspec.wm_mask'),
+        'label-CSF_mask': (fs_seg, 'outputspec.csf_mask'),
+        'label-GM_mask': (fs_seg, 'outputspec.gm_mask'),
+        'label-WM_mask': (fs_seg, 'outputspec.wm_mask'),
         **hemisphere_outputs
     }
 
