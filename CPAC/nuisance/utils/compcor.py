@@ -208,8 +208,3 @@ def TR_string_to_float(tr):
         raise ValueError(f'Can not convert TR string to float: "{tr}".') from exc
 
     return tr_numeric
-Footer
-© 2023 GitHub, Inc.
-Footer navigation
-Terms
-Privacy
